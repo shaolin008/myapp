@@ -15,6 +15,16 @@ from models import User
 from auth import require_admin
 from fastapi.middleware.cors import CORSMiddleware
 import time
+import logging
+import sys
+
+logging.basicConfig(
+    level=logging.INFO,
+    format='{"time":"%(asctime)s","level":"%(levelname)s","module":"%(module)s","message":"%(message)s"}',
+    datefmt='%Y-%m-%dT%H:%M:%S',
+    stream=sys.stdout,
+)
+logger = logging.getLogger(__name__)
 
 
 @asynccontextmanager
@@ -24,12 +34,12 @@ async def lifespan(app: FastAPI):
     for i in range(max_retries):
         try:
             Base.metadata.create_all(bind=engine)
-            print(f"✅ 数据库已就绪，环境：{settings.APP_ENV}")
+            logger.info(f"✅ 数据库已就绪，环境：{settings.APP_ENV}")
             break
         except Exception as e:
             if i == max_retries - 1:
                 raise
-            print(f"⏳ 等待数据库启动... ({i+1}/{max_retries})")
+            logger.info(f"⏳ 等待数据库启动... ({i+1}/{max_retries})")
             time.sleep(3)
     yield
 

@@ -52,6 +52,13 @@ services:
         condition: service_healthy
     volumes:
       - uploads:/app/uploads
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+        labels: "app"
+        tag: "api-{{.ID}}"
 
   # ── Nginx 反向代理 ─────────────────────────
   nginx:
@@ -65,6 +72,11 @@ services:
       - ./nginx/conf.d:/etc/nginx/conf.d:ro
     depends_on:
       - api
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
 volumes:
   pgdata:
