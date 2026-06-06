@@ -1,0 +1,72 @@
+version: "3.9"
+
+services:
+  # ── PostgreSQL 数据库 ─────────────────────
+  db:
+    image: postgres:16-alpine
+    container_name: myapp_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: chat_db
+      POSTGRES_USER: chat_user
+      POSTGRES_PASSWORD: 188160
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"     # 映射到 5433 避免和本地 PostgreSQL 冲突
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U chat_user -d chat_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # ── Redis 缓存/限流 ──────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: myapp_redis
+    restart: unless-stopped
+    volumes:
+      - redisdata:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  # ── FastAPI 应用 ─────────────────────────
+  api:
+    #build: .
+    image: shaolin008/myapp:latest
+    container_name: myapp_api
+    restart: unless-stopped
+    #ports:
+      #- "8000:8000"
+    expose:
+      - "8000"
+    env_file:
+      - .env.prod
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - uploads:/app/uploads
+
+  # ── Nginx 反向代理 ─────────────────────────
+  nginx:
+    image: nginx:1.27-alpine
+    container_name: myapp_nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+    depends_on:
+      - api
+
+volumes:
+  pgdata:
+  redisdata:
+  uploads:

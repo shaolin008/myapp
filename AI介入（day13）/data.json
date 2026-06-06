@@ -1,0 +1,1 @@
+{"next_id": 1, "persons": {}, "pending_reviews": [{"id": "review_1", "operation": "add_person", "params": {"name": "涂绍林", "age": 39, "department": "销售部"}, "ai_analysis": "\nAI 风险评估报告：\n- 操作：添加人员\n- 姓名：涂绍林\n- 年龄：39\n- 部门：销售部\n- 风险等级：L2（高风险写操作）\n- AI 建议：需检查是否重复添加\n    ", "status": "pending", "created_at": "2025-02-09"}]}

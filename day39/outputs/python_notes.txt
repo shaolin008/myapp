@@ -1,0 +1,91 @@
+========================================
+  Python & FastAPI 学习笔记
+========================================
+
+一、Python 基础
+----------------------------------------
+
+1. 概述
+   - Python 是一种高级编程语言，语法简洁易读，适合初学者。
+   - 支持面向对象、函数式编程等多种编程范式。
+   - 拥有丰富的标准库和第三方生态。
+
+2. 常用数据类型与结构
+   - 列表 (list)：有序、可变，用 [] 表示，如 [1, 2, 3]
+   - 字典 (dict)：键值对、可变，用 {} 表示，如 {"name": "Tom"}
+   - 元组 (tuple)：有序、不可变，用 () 表示，如 (1, 2, 3)
+   - 集合 (set)：无序、不重复，用 {} 表示，如 {1, 2, 3}
+   - 字符串 (str)：不可变文本序列
+
+3. 基本语法特点
+   - 用缩进（空格/制表符）表示代码块，代替大括号
+   - 动态类型：变量无需声明类型
+   - 一切皆对象
+
+
+二、FastAPI 框架
+----------------------------------------
+
+1. 简介
+   - FastAPI 是基于 Python 的现代、高性能 Web 框架
+   - 专为构建 API 而设计，性能优秀（媲美 Node.js 和 Go）
+   - 基于 Starlette（网络层）和 Pydantic（数据校验层）
+
+2. 核心特性
+   - 自动生成 OpenAPI 文档（Swagger UI + ReDoc）
+   - 基于类型提示（Type Hints）进行数据校验
+   - 原生支持异步（async/await），高并发场景表现优秀
+   - 自动进行请求/响应数据序列化与反序列化
+
+3. 常用功能模块
+   - 路径操作装饰器：@app.get()、@app.post()、@app.put()、@app.delete()
+   - 路径参数与查询参数
+   - 请求体（Request Body）模型定义
+   - 依赖注入（Dependency Injection）
+   - 中间件（Middleware）
+   - CORS 跨域支持
+
+4. 与其他框架对比
+   - Django：重量级全栈框架，适合大型项目
+   - Flask：轻量级微框架，灵活自由
+   - FastAPI：现代高性能，特别适合构建 RESTful API 和微服务
+
+
+三、最佳实践建议
+----------------------------------------
+1. 使用 Pydantic 模型进行数据验证和类型检查
+2. 善用依赖注入管理数据库连接、认证等公共逻辑
+3. 利用异步特性处理 I/O 密集型任务
+4. 使用自动生成的 API 文档进行接口调试
+5. 结合 SQLAlchemy 或 Tortoise-ORM 管理数据库
+
+
+四、常用代码示例（伪代码）
+----------------------------------------
+
+# 1. 基本 FastAPI 应用
+# from fastapi import FastAPI
+# app = FastAPI()
+
+# @app.get("/")
+# def read_root():
+#     return {"Hello": "World"}
+
+# 2. 带路径参数和类型校验
+# @app.get("/items/{item_id}")
+# def read_item(item_id: int, q: str = None):
+#     return {"item_id": item_id, "q": q}
+
+# 3. 请求体模型
+# from pydantic import BaseModel
+# class Item(BaseModel):
+#     name: str
+#     price: float
+
+# @app.post("/items/")
+# def create_item(item: Item):
+#     return item
+
+========================================
+  笔记整理完成 | 最后更新：2024年
+========================================

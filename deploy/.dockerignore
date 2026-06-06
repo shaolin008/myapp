@@ -1,0 +1,11 @@
+__pycache__
+*.pyc
+.env
+.env.*
+!.env.prod
+.git
+.idea
+.vscode
+venv
+*.db
+uploads
